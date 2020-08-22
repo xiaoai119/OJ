@@ -56,14 +56,14 @@ public class Sort {
     }
 
 
-    public static int[] sort2(int[] array,int low ,int high){
+    public static int[] mergeSort(int[] array,int low ,int high){
         if(low==high){
             return array;
         }
         int mid= (low+high)/2;
 
-        sort2(array,low,mid);
-        sort2(array,mid+1,high);
+        mergeSort(array,low,mid);
+        mergeSort(array,mid+1,high);
 
         merge(array ,low ,high);
         return array;
