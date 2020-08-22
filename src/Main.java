@@ -1,48 +1,58 @@
+import java.util.ArrayList;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 
 /**
  * Created By xfj on 2020/8/22
  */
 public class Main {
-//    小美是美团仓库的管理员，她会根据单据的要求按顺序取出仓库中的货物，每取出一件货物后会把剩余货物重新堆放，使得自己方便查找。已知货物入库的时候是按顺序堆放在一起的。如果小美取出其中一件货物，则会把货物所在的一堆物品以取出的货物为界分成两堆，这样可以保证货物局部的顺序不变。
+//    小美的一个兼职是美团的一名跑腿代购员，她有n个订单可以接，订单编号是1~n，但是因为订单的时效性，他只能选择其中m个订单接取，精明的小美当然希望自己总的获利是最大的，已知，一份订单会提供以下信息，跑腿价格v，商品重量w kg，商品每重1kg，代购费用要加2元，而一份订单可以赚到的钱是跑腿价格和重量加价之和。小美可是开兰博基尼送货的人，所以自然不会在意自己会累这种事情。请问小美应该选择哪些订单，使得自己获得的钱最多。
 //
-//    已知货物最初是按1~n的顺序堆放的，每件货物的重量为w_i,小美会根据单据依次不放回的取出货物。请问根据上述操作，小美每取出一件货物之后，重量和最大的一堆货物重量是多少？
+//    请你按照选择的订单编号的从小到大顺序，如果存在多种方案，输出订单编号字典序较小的方案
+//
+//    5 2
+//            5 10
+//            8 9
+//            1 4
+//            7 9
+//            6 10
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String s = sc.nextLine();
-        int n=Integer.parseInt(s);
-        //n表示有n堆货物
-        //取出货物可以将值记为-1，那么每取出一次货物，均需遍历一次数组
-        int[] goods = new int[n];
-        String s1 = sc.nextLine();
-        String[] split = s1.split(" ");
-        for(int i=0;i<split.length;i++){
-            goods[i]=Integer.parseInt(split[i]);
+        String[] split = s.split(" ");
+        int n=Integer.parseInt(split[0]);
+        int m=Integer.parseInt(split[1]);
+        int[][] value=new int[n][2];
+
+        for(int i=0;i<n;i++){
+            String s1 = sc.nextLine();
+            String[] split1 = s1.split(" ");
+            value[i][0]=i+1;
+            value[i][1]=Integer.parseInt(split1[0])+2*Integer.parseInt(split1[1]);
+        }
+        ArrayList<Integer> result = new ArrayList<>();
+        PriorityQueue<int[]> heap=new  PriorityQueue<int[]>((n1,n2)->{
+            if(n2[1]-n1[1]!=0)
+                return n2[1]-n1[1];
+            else
+                return n1[0]-n2[0];
+        });
+        for (int[] ints : value) {
+            heap.add(ints);
+        }
+        for(int i=0;i<m;i++){
+            int[] poll = heap.poll();
+            result.add(poll[0]);
         }
 
-        int[] takes = new int[n];
-
-        String s2 = sc.nextLine();
-        String[] split2 = s2.split(" ");
-        for(int i=0;i<split.length;i++){
-            takes[i]=Integer.parseInt(split2[i]);
+        for(int i=0;i<result.size();i++){
+            if(i!=result.size()-1)
+                System.out.print(result.get(i)+" ");
+            else
+                System.out.print(result.get(i));
         }
 
-        int max=0;
-        for (int take : takes) {
-            int temp=0;
-            goods[take-1]=-1;
-//            for(int i=take-1;dp)
-            for (int good : goods) {
-                if(good!=-1){
-                    temp+=good;
-                    max=max>temp?max:temp;
-                }else{
-                    temp=0;
-                }
-            }
-            System.out.println(max);
-            max=0;
-        }
+
     }
 }
